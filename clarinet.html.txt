@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Clarinet</title>
+    <style>
+        body { background: #0a0c15; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .clarinet { background: #1e2235; padding: 30px; border-radius: 48px; }
+        .keys { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .key { background: #f4f6fc; width: 70px; height: 200px; border-radius: 20px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; font-weight: bold; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #8f9bb3; transition: 0.05s linear; }
+        .key:active { transform: translateY(4px); box-shadow: 0 2px 0 #6b7a97; }
+        .status { color: #ccddf8; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="clarinet">
+    <div class="keys" id="keys"></div>
+    <div class="status">🎵 Click keys → real clarinet sound</div>
+</div>
+
+<script type="importmap">
+    { "imports": { "smplr": "https://unpkg.com/smplr@0.9.0/dist/index.mjs" } }
+</script>
+<script type="module">
+    import { Soundfont } from 'smplr';
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let clarinet = null;
+
+    async function loadClarinet() {
+        if (clarinet) return clarinet;
+        const sf = new Soundfont(audioCtx, { instrument: 'clarinet' });
+        await sf.load;
+        clarinet = sf;
+        return clarinet;
+    }
+
+    async function playNote(midi) {
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
+        const inst = await loadClarinet();
+        if (!inst) return;
+        inst.start({ note: midi, velocity: 90 });
+        setTimeout(() => inst.stop({ note: midi }), 800);
+    }
+
+    const notes = [
+        { midi: 64, label: 'E4' }, { midi: 66, label: 'F#4' },
+        { midi: 67, label: 'G4' }, { midi: 69, label: 'A4' },
+        { midi: 71, label: 'B4' }, { midi: 72, label: 'C5' },
+        { midi: 74, label: 'D5' }, { midi: 76, label: 'E5' }
+    ];
+
+    const container = document.getElementById('keys');
+    notes.forEach(n => {
+        const btn = document.createElement('div');
+        btn.className = 'key';
+        btn.innerText = n.label;
+        btn.onclick = () => playNote(n.midi);
+        container.appendChild(btn);
+    });
+
+    document.body.addEventListener('click', () => { if (audioCtx.state === 'suspended') audioCtx.resume(); });
+</script>
+</body>
+</html>
