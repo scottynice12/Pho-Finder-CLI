@@ -10,12 +10,13 @@ Step 3: Open your terminal
 Type command: cd C:\Users\name\OneDrive\Documents\Pho_Restaraunt //hypothetically if I saved it inside a document
 
 Step 3b.
-type Python your file name and "Chicago IL" #example given for a city
+type Python your file name and "Chicago, IL" #example given for a city
 
 Step 4.
 If you can't find any pho restaraunts, adjust the radius and limit
-Python your file name "Chicago IL" --radius 50000 --limit 50
+Python your file name "Chicago, IL" --radius 50000 --limit 50
 The radius represents 50000 meters in a city and the limit is the amount of restaraunts you'll see
 
 Step 5.
 Enjoy your search and try delightful noodles in your desired city
+Disclaimer: Search up cities and the abbreviated state name always to find the place
