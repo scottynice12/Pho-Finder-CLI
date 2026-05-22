@@ -13,7 +13,7 @@ Step 3b.
 type Python your file name and "Chicago, IL" #example given for a city
 
 Step 4.
-If you can't find any pho restaraunts, adjust the radius and limit
+If you can't find any pho restaurants, adjust the radius and limit
 Python your file name "Chicago, IL" --radius 50000 --limit 50
 The radius represents 50000 meters in a city and the limit is the amount of restaraunts you'll see
 
